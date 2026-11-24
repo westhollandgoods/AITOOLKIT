@@ -8,6 +8,7 @@ A one-page field reference for police investigators in Ontario, Canada, that acc
 - a watchlist of dark AI tools
 - a glossary
 - reporting contacts
+- links to explore AI tools safely
 
 Live page: https://westhollandgoods.github.io/AITOOLKIT/
 
