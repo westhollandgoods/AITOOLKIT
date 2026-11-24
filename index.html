@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Toolkit for Investigators</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: field reference card, one readable column with a sticky section bar; mirrors the briefing deck (terminal grid, amber accent) */
+:root {
+  --bg: #0a0806;
+  --panel: #15110c;
+  --line: #3a2a16;
+  --fg: #f3e2c7;
+  --muted: #b8a585;
+  --accent: #f8861e;
+  --accent-ink: #1a0f04;
+  --warn: #ff6b4a;
+  --ok: #8fc97a;
+  --grid: rgba(248, 134, 30, .06);
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #fbf8f4; --panel: #ffffff; --line: #e4d6c2; --fg: #22180d; --muted: #6b5a44;
+    --accent: #b5561a; --accent-ink: #ffffff; --warn: #b8361c; --ok: #3d7a2c; --grid: rgba(181, 86, 26, .05);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #fbf8f4; --panel: #ffffff; --line: #e4d6c2; --fg: #22180d; --muted: #6b5a44;
+  --accent: #b5561a; --accent-ink: #ffffff; --warn: #b8361c; --ok: #3d7a2c; --grid: rgba(181, 86, 26, .05);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+  color: var(--fg);
+  font: 16px/1.6 var(--sans);
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, .mono { font-family: var(--mono); }
+code { font-size: .86em; background: color-mix(in srgb, var(--accent) 12%, transparent); padding: .1em .35em; border-radius: 3px; overflow-wrap: anywhere; }
+
+.wrap { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header.top { padding-block: 40px 28px; }
+.kicker { font: 600 .78rem/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+h1 { font: 700 clamp(2rem, 6vw, 3.1rem)/1.08 var(--mono); margin: 0 0 14px; text-wrap: balance; letter-spacing: -.01em; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0 0 22px; font-size: 1.05rem; }
+.motto { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.motto li { font: 600 .85rem/1 var(--mono); letter-spacing: .08em; padding: 10px 12px; border: 1px solid var(--accent); color: var(--accent); }
+.motto li:first-child { background: var(--accent); color: var(--accent-ink); }
+
+nav.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-block: 1px solid var(--line); }
+nav.bar .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
+nav.bar a { flex: none; font: 500 .8rem/1 var(--mono); color: var(--muted); text-decoration: none; padding: 8px 10px; border: 1px solid var(--line); white-space: nowrap; }
+nav.bar a:hover, nav.bar a.on { color: var(--accent); border-color: var(--accent); }
+
+main { padding-block: 8px 48px; }
+section { padding-block: 36px 8px; scroll-margin-top: 64px; }
+h2 { font: 700 1.45rem/1.2 var(--mono); margin: 0 0 6px; text-wrap: balance; }
+h2 .tag { display: block; font: 600 .72rem/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.intro { color: var(--muted); margin: 0 0 18px; max-width: 64ch; }
+h3 { font: 600 1rem/1.3 var(--mono); margin: 0 0 10px; color: var(--fg); }
+
+.panel { background: var(--panel); border: 1px solid var(--line); padding: 18px 18px 14px; }
+.stack { display: grid; gap: 14px; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.cols > * { min-width: 0; }
+
+/* checklists */
+.check { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.check label { display: grid; grid-template-columns: 22px 1fr; gap: 10px; padding: 8px 0; cursor: pointer; align-items: start; }
+.check input { appearance: none; width: 18px; height: 18px; margin: 3px 0 0; border: 1.5px solid var(--accent); background: transparent; display: grid; place-content: center; cursor: pointer; }
+.check input::after { content: ""; width: 10px; height: 10px; background: var(--accent); transform: scale(0); transition: transform .12s; }
+.check input:checked::after { transform: scale(1); }
+.check input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--muted) 60%, transparent); }
+.check small { display: block; color: var(--muted); font-size: .88rem; }
+.reset { font: 500 .75rem/1 var(--mono); background: none; color: var(--muted); border: 1px solid var(--line); padding: 7px 10px; cursor: pointer; margin-top: 8px; }
+.reset:hover { color: var(--accent); border-color: var(--accent); }
+
+.callout { border: 1px solid var(--warn); padding: 12px 14px; font-size: .95rem; margin-top: 14px; }
+.callout b { color: var(--warn); font-family: var(--mono); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin-right: 6px; }
+
+/* tables */
+.tbl { overflow-x: auto; border: 1px solid var(--line); background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .92rem; }
+th, td { text-align: left; vertical-align: top; padding: 11px 12px; border-bottom: 1px solid var(--line); }
+th { font: 600 .72rem/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--panel)); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-family: var(--mono); font-weight: 600; white-space: nowrap; }
+.note { color: var(--muted); font-size: .88rem; margin: 10px 0 0; }
+
+/* process steps */
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 44px 1fr; gap: 12px; background: var(--panel); border: 1px solid var(--line); padding: 14px; }
+.steps li::before { content: counter(s, decimal-leading-zero); font: 700 1.05rem/1 var(--mono); color: var(--accent); padding-top: 3px; }
+.steps p { margin: 4px 0 0; color: var(--muted); font-size: .94rem; }
+
+/* watchlist */
+.watch { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+.tool { background: var(--panel); border: 1px solid var(--line); padding: 14px; min-width: 0; }
+.tool header { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; margin-bottom: 6px; }
+.tool h3 { margin: 0; }
+.tool time { font: 600 .72rem/1 var(--mono); color: var(--accent); white-space: nowrap; }
+.tool p { margin: 0; color: var(--muted); font-size: .92rem; }
+
+/* glossary */
+.search { width: 100%; font: 1rem var(--mono); color: var(--fg); background: var(--panel); border: 1px solid var(--line); padding: 12px 14px; margin-bottom: 12px; }
+.search::placeholder { color: var(--muted); }
+dl.gloss { margin: 0; display: grid; gap: 0; border: 1px solid var(--line); background: var(--panel); }
+dl.gloss div { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+dl.gloss div:last-child { border-bottom: 0; }
+dt { font: 600 .95rem/1.3 var(--mono); color: var(--accent); }
+dd { margin: 4px 0 0; color: var(--fg); font-size: .94rem; }
+.empty { padding: 14px; color: var(--muted); }
+
+/* contacts */
+.contact { display: grid; gap: 4px; }
+.contact .big { font: 700 1.25rem/1.2 var(--mono); color: var(--fg); user-select: all; }
+.copy { justify-self: start; font: 500 .75rem/1 var(--mono); background: var(--accent); color: var(--accent-ink); border: 0; padding: 8px 10px; cursor: pointer; margin-top: 6px; }
+ul.links { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+ul.links li { display: grid; gap: 2px; }
+ul.links span { color: var(--muted); font-size: .9rem; }
+
+footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var(--muted); font-size: .85rem; }
+footer p { margin: 0 0 8px; max-width: 70ch; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="kicker">&gt; Field reference // Updated November 2026</p>
+    <h1>AI Toolkit for Investigators</h1>
+    <p class="lede">What to check, where AI evidence lives, how to get it, and who to call. Built to accompany an AI technology briefing for police. Tick boxes are saved on your own phone only.</p>
+    <ul class="motto" aria-label="Three rules"><li>Slow down</li><li>Verify</li><li>Preserve</li></ul>
+  </div>
+</header>
+
+<nav class="bar" aria-label="Sections">
+  <div class="wrap">
+    <a href="#verify">Is it real?</a>
+    <a href="#victims">Victim advice</a>
+    <a href="#device">On the device</a>
+    <a href="#cloud">In the cloud</a>
+    <a href="#watchlist">Dark AI tools</a>
+    <a href="#own-use">Using AI at work</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#report">Report &amp; resources</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="verify">
+    <h2><span class="tag">01 // Verification</span>Is it real?</h2>
+    <p class="intro">A face, a voice or a document can now be generated cheaply. Treat media as a claim to be tested, not proof. These checks work whether the item turns out to be real or fake.</p>
+    <div class="cols">
+      <div class="panel">
+        <h3>Photo or video</h3>
+        <ul class="check" data-list="photo">
+          <li><label><input type="checkbox" id="ph1"><span>Get the original file, not a screenshot or a forward<small>Record the URL, account, date and a hash of the file.</small></span></label></li>
+          <li><label><input type="checkbox" id="ph2"><span>Find the earliest copy<small>Reverse image search: Google Lens, TinEye, Bing Visual Search.</small></span></label></li>
+          <li><label><input type="checkbox" id="ph3"><span>Check Content Credentials<small>Upload to contentcredentials.org/verify. Missing credentials prove nothing.</small></span></label></li>
+          <li><label><input type="checkbox" id="ph4"><span>Read the metadata<small>Camera model, GPS, software tags, AI generator fields. Easily stripped or faked.</small></span></label></li>
+          <li><label><input type="checkbox" id="ph5"><span>Test the scene against the world<small>Weather, shadows, signage, events, the person's known whereabouts.</small></span></label></li>
+          <li><label><input type="checkbox" id="ph6"><span>Corroborate independently<small>CCTV, phone records, transactions, witnesses.</small></span></label></li>
+        </ul>
+        <button class="reset" type="button" data-reset="photo">Clear ticks</button>
+      </div>
+      <div class="panel">
+        <h3>Phone or video call</h3>
+        <ul class="check" data-list="call">
+          <li><label><input type="checkbox" id="ca1"><span>Hang up and call back<small>Use a number you already have, never one the caller gives.</small></span></label></li>
+          <li><label><input type="checkbox" id="ca2"><span>Ask something only the real person knows<small>Or use a family or workplace code word agreed in advance.</small></span></label></li>
+          <li><label><input type="checkbox" id="ca3"><span>Treat urgency and secrecy as the red flag<small>"Don't tell anyone", "act now", "your account is compromised".</small></span></label></li>
+          <li><label><input type="checkbox" id="ca4"><span>Ignore caller ID and display names<small>Both can be spoofed. A familiar voice or face is not identity.</small></span></label></li>
+          <li><label><input type="checkbox" id="ca5"><span>Confirm money requests through a second channel<small>In person, or a known number. Arup lost US$25M to a deepfake video call.</small></span></label></li>
+        </ul>
+        <button class="reset" type="button" data-reset="call">Clear ticks</button>
+      </div>
+      <div class="panel">
+        <h3>Document or ID</h3>
+        <ul class="check" data-list="doc">
+          <li><label><input type="checkbox" id="do1"><span>Confirm with the issuer directly<small>Bank, employer, government office: use their published contact.</small></span></label></li>
+          <li><label><input type="checkbox" id="do2"><span>Check the file properties<small>Creator software, creation and edit dates, fonts.</small></span></label></li>
+          <li><label><input type="checkbox" id="do3"><span>Check selfie and ID matches against liveness logs<small>Ask the institution for its verification records, not just the image.</small></span></label></li>
+          <li><label><input type="checkbox" id="do4"><span>Check investment firms are registered<small>aretheyregistered.ca or your provincial securities regulator.</small></span></label></li>
+        </ul>
+        <button class="reset" type="button" data-reset="doc">Clear ticks</button>
+      </div>
+    </div>
+    <p class="callout"><b>In court</b>"It's a deepfake" is a claim that needs evidence, in either direction. In R. v. Medow, 2025 ONCJ 661, a bare allegation that body-cam video was faked was rejected.</p>
+  </section>
+
+  <section id="victims">
+    <h2><span class="tag">02 // Prevention</span>What to tell the public</h2>
+    <p class="intro">Short lines that work at a counter, on a call or in a media release.</p>
+    <div class="cols">
+      <div class="panel"><h3>Assume it's fake until verified</h3><p class="note" style="margin:0">If a video shows a public figure promoting an investment, assume it is fake. The Prime Minister does not sell crypto platforms.</p></div>
+      <div class="panel"><h3>Set a family code word</h3><p class="note" style="margin:0">A short recording is enough to clone a voice. A code word defeats the "grandchild in trouble" call.</p></div>
+      <div class="panel"><h3>Never pay in crypto or gift cards</h3><p class="note" style="margin:0">No bank, police service or government agency asks for payment this way.</p></div>
+      <div class="panel"><h3>Fake gains are the hook</h3><p class="note" style="margin:0">A dashboard showing your money growing is the scam. Try a small withdrawal before investing more.</p></div>
+    </div>
+  </section>
+
+  <section id="device">
+    <h2><span class="tag">03 // Digital forensics</span>AI on a seized device</h2>
+    <p class="intro">Local AI leaves files. Image the device first. Default paths below can be moved in each app's settings, so also search the whole drive by file type and name.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Tool</th><th>What to look for</th><th>Default location</th></tr></thead>
+        <tbody>
+          <tr><td>LM Studio</td><td>Downloaded models (<code>.gguf</code>) and saved chats as JSON files</td><td>Windows: <code>%USERPROFILE%\.lmstudio\models</code> and <code>\.lmstudio\conversations</code><br>macOS: <code>~/.lmstudio/</code><br>Older versions: <code>.cache\lm-studio</code></td></tr>
+          <tr><td>Ollama</td><td>Model blobs and manifests. Ollama keeps little chat history itself; check the front end used with it</td><td>Windows: <code>%USERPROFILE%\.ollama\models</code><br>macOS: <code>~/.ollama/models</code><br>Or the folder set in <code>OLLAMA_MODELS</code></td></tr>
+          <tr><td>Open WebUI</td><td>Chat history, users and uploaded files in a SQLite database</td><td><code>webui.db</code> in its data folder, often inside a Docker volume</td></tr>
+          <tr><td>ComfyUI</td><td>Generated images. PNGs often embed <code>prompt</code> and <code>workflow</code> JSON with the exact settings used</td><td><code>ComfyUI\output</code>; models under <code>ComfyUI\models</code></td></tr>
+          <tr><td>Automatic1111 / Forge</td><td>Generated images. PNGs often carry a <code>parameters</code> text field with the prompt</td><td><code>outputs\txt2img-images</code>, <code>outputs\img2img-images</code></td></tr>
+          <tr><td>Face and voice add-ons</td><td>LoRA files trained on one person (small <code>.safetensors</code>, often named after them), reference photos, voice samples</td><td>Model folders of the tools above; training folders with many photos of one face</td></tr>
+          <tr><td>Any</td><td>Model names containing <code>abliterated</code>, <code>uncensored</code>, <code>heretic</code>, <code>nsfw</code>; file types <code>.gguf</code> <code>.safetensors</code> <code>.ckpt</code></td><td>Whole drive and external media. Files are large (2–200 GB)</td></tr>
+          <tr><td>Browser and accounts</td><td>Downloads from huggingface.co or civitai.com, AI subscription receipts, API keys in <code>.env</code> files, Telegram purchases of dark AI tools</td><td>Browser history, email, password managers, payment records</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Missing metadata does not mean an image is real; re-saving or uploading strips it. A model file alone does not establish criminal use: tie it to what was asked and what was made.</p>
+  </section>
+
+  <section id="cloud">
+    <h2><span class="tag">04 // Legal process</span>AI in the cloud</h2>
+    <p class="intro">If the suspect used ChatGPT, Claude, Gemini or similar, the chats sit on the provider's servers. Most providers are US companies. Move early.</p>
+    <ol class="steps">
+      <li><div><h3>Preserve first</h3><p>Preservation demand under s. 487.012 Cr.C., and a voluntary preservation request to the provider. OpenAI's published policy preserves data for up to 90 days on request. Deleted chats can be gone from some providers within 30 days.</p></div></li>
+      <li><div><h3>Then compel</h3><p>Production order (s. 487.014) for Canadian-held data. For US-held content, get advice early on the cross-border route (MLAT or provider policy). Check each provider's law-enforcement guidelines.</p></div></li>
+      <li><div><h3>Ask for the right things</h3><p>Subscriber and payment details, IP and login history, chat content, uploaded files, generated images, and any safety flags or account enforcement.</p></div></li>
+      <li><div><h3>Imminent harm</h3><p>Providers run emergency disclosure processes for threats to life. A provider referral is possible but never guaranteed; no Canadian law requires AI companies to report threats.</p></div></li>
+    </ol>
+    <p class="note">Reference: <a href="https://cdn.openai.com/pdf/openai-law-enforcement-policy-v.2025-12.pdf" target="_blank" rel="noopener">OpenAI Government User Data Request Policy (PDF)</a>. Not legal advice; confirm with your legal services or Crown.</p>
+  </section>
+
+  <section id="watchlist">
+    <h2><span class="tag">05 // Threat intel</span>Dark AI tool watchlist</h2>
+    <p class="intro">Criminal AI brands come and go. Most are an uncensored open model or a jailbroken mainstream AI under a new name. Follow the payments and accounts, not the brand.</p>
+    <div class="watch">
+      <article class="tool"><header><h3>WormGPT</h3><time>2023–26</time></header><p>The original "ChatGPT without limits". Version 4 sold on Telegram for $50/month or $220 lifetime. New versions keep appearing.</p></article>
+      <article class="tool"><header><h3>FraudGPT</h3><time>2023</time></header><p>Dark web and Telegram, $200/month. Pitched for phishing, business email compromise and carding.</p></article>
+      <article class="tool"><header><h3>KawaiiGPT</h3><time>2025</time></header><p>Free on GitHub, runs in minutes, even on Android. Wrote bank phishing emails and data-theft scripts in testing.</p></article>
+      <article class="tool"><header><h3>Luciferus</h3><time>Aug 2026</time></header><p>Exploit forum, $35–$75/month. Claims its own 120B model; Sophos assesses an uncensored open model. Produced a remote-access trojan.</p></article>
+      <article class="tool"><header><h3>MessiahGPT</h3><time>Oct 2026</time></header><p>BreachForums, from $8 after free queries, with a website and Telegram group. Marketed for ransomware and phishing kits.</p></article>
+      <article class="tool"><header><h3>APEX AI</h3><time>2026</time></header><p>Sold as self-hosted software, so every buyer runs a private copy. No central server to seize.</p></article>
+      <article class="tool"><header><h3>Nytheon AI</h3><time>2025</time></header><p>Tor-only platform bundling several uncensored Llama-based models. Promoted on Telegram and Russian-language forums.</p></article>
+      <article class="tool"><header><h3>DIG AI</h3><time>2025–26</time></header><p>Tor, no account needed. Promoted on underground markets alongside drugs and stolen financial data.</p></article>
+    </div>
+    <p class="note">Sources: Palo Alto Unit 42, Sophos CTU, Trellix, Cato CTRL, Resecurity. Prices and capabilities are seller claims.</p>
+  </section>
+
+  <section id="own-use">
+    <h2><span class="tag">06 // Policy</span>Using AI in your own work</h2>
+    <p class="intro">AI helps with review, transcription, translation and drafting. It also invents facts with total confidence.</p>
+    <div class="cols">
+      <div class="panel">
+        <h3>Do</h3>
+        <ul class="check" data-list="do">
+          <li><label><input type="checkbox" id="u1"><span>Use only tools your service has approved</span></label></li>
+          <li><label><input type="checkbox" id="u2"><span>Check every fact, quote and citation against the original</span></label></li>
+          <li><label><input type="checkbox" id="u3"><span>Keep the prompts and outputs if AI touched evidence or a report</span></label></li>
+          <li><label><input type="checkbox" id="u4"><span>Label AI-drafted text, and be ready to say which words are yours</span></label></li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Don't</h3>
+        <ul class="check" data-list="dont">
+          <li><label><input type="checkbox" id="n1"><span>Paste case details, victim information or evidence into public chatbots</span></label></li>
+          <li><label><input type="checkbox" id="n2"><span>Rely on an AI summary of a statement you haven't read</span></label></li>
+          <li><label><input type="checkbox" id="n3"><span>Use facial recognition or other AI tools without a lawful basis<small>Clearview AI use was ruled a privacy breach.</small></span></label></li>
+          <li><label><input type="checkbox" id="n4"><span>Forget disclosure: AI outputs used in a file may be disclosable</span></label></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="tag">07 // Terms</span>Glossary</h2>
+    <label for="q" class="intro" style="display:block">Filter the terms you hear in reports and warrants.</label>
+    <input id="q" class="search" type="search" placeholder="Search terms, e.g. abliterated" autocomplete="off">
+    <dl class="gloss" id="gloss">
+      <div><dt>Large language model (LLM)</dt><dd>AI that writes text by predicting the next word. Fluent is not the same as true.</dd></div>
+      <div><dt>Hallucination</dt><dd>A confident, invented answer: fake quotes, case law or facts.</dd></div>
+      <div><dt>Agent</dt><dd>AI that takes actions (browses, clicks, runs code, sends email) toward a goal, not just answers.</dd></div>
+      <div><dt>Local model</dt><dd>A model downloaded and run on the user's own computer. No provider sees the prompts; evidence stays on the device.</dd></div>
+      <div><dt>Open-weight model</dt><dd>A model whose files are published for anyone to download (Llama, Qwen, Gemma, DeepSeek).</dd></div>
+      <div><dt>Uncensored</dt><dd>An open model retrained so it no longer refuses harmful requests.</dd></div>
+      <div><dt>Abliterated</dt><dd>An open model with its "refusal direction" removed directly from the weights. Cheap, fast, and thousands are on Hugging Face.</dd></div>
+      <div><dt>Jailbreak</dt><dd>A prompt that tricks a mainstream AI into ignoring its safety rules, e.g. "it's just a test" or "it's fiction".</dd></div>
+      <div><dt>GGUF</dt><dd>A common file format for local language models (<code>.gguf</code>), used by LM Studio, Ollama and llama.cpp.</dd></div>
+      <div><dt>Safetensors</dt><dd>A file format for model weights (<code>.safetensors</code>), common for image models and LoRAs.</dd></div>
+      <div><dt>LoRA</dt><dd>A small add-on file that teaches an image model one face, style or object. A LoRA named after a real person is significant.</dd></div>
+      <div><dt>Deepfake</dt><dd>Media where a real person's face or voice is generated or swapped in.</dd></div>
+      <div><dt>Voice clone</dt><dd>A synthetic copy of a real voice made from a short recording.</dd></div>
+      <div><dt>Content Credentials (C2PA)</dt><dd>A signed record attached to a file describing how it was made or edited. Its absence proves nothing.</dd></div>
+      <div><dt>SynthID</dt><dd>Google's invisible watermark in AI images, audio and video from its own tools.</dd></div>
+      <div><dt>Prompt injection</dt><dd>Hidden instructions in a web page or document that hijack an AI agent reading it.</dd></div>
+      <div><dt>Hugging Face</dt><dd>The largest public library of AI models. Legitimate, and also where most uncensored models are published.</dd></div>
+    </dl>
+    <p class="empty" id="none" hidden>No terms match. Try a shorter word.</p>
+  </section>
+
+  <section id="report">
+    <h2><span class="tag">08 // Contacts</span>Report &amp; resources</h2>
+    <div class="cols">
+      <div class="panel contact">
+        <h3>Canadian Anti-Fraud Centre</h3>
+        <span class="big" id="cafc-phone">1-888-495-8501</span>
+        <span class="note" style="margin:0">Report online: <a href="https://reportcyberandfraud.canada.ca" target="_blank" rel="noopener">reportcyberandfraud.canada.ca</a></span>
+        <button class="copy" type="button" data-copy="cafc-phone">Copy number</button>
+      </div>
+      <div class="panel contact">
+        <h3>Child sexual exploitation, including AI images</h3>
+        <span class="note" style="margin:0">AI-generated child sexual abuse material is still an offence. Public reports: <a href="https://www.cybertip.ca" target="_blank" rel="noopener">cybertip.ca</a></span>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <ul class="links">
+        <li><a href="https://www.antifraudcentre-centreantifraude.ca" target="_blank" rel="noopener">Canadian Anti-Fraud Centre</a><span>Current scams, prevention material for the public</span></li>
+        <li><a href="https://www.cyber.gc.ca" target="_blank" rel="noopener">Canadian Centre for Cyber Security</a><span>Advisories, including AI voice impersonation of officials</span></li>
+        <li><a href="https://www.aretheyregistered.ca" target="_blank" rel="noopener">Are they registered?</a><span>Check whether an investment firm or adviser is registered in Canada</span></li>
+        <li><a href="https://contentcredentials.org/verify" target="_blank" rel="noopener">Content Credentials Verify</a><span>Upload an image to read its provenance record</span></li>
+        <li><a href="https://fintrac-canafe.canada.ca" target="_blank" rel="noopener">FINTRAC</a><span>Financial intelligence and reporting obligations</span></li>
+        <li><a href="https://www.priv.gc.ca" target="_blank" rel="noopener">Office of the Privacy Commissioner</a><span>Guidance on facial recognition and biometrics in policing</span></li>
+        <li><a href="https://www.interpol.int/How-we-work/Innovation/Artificial-Intelligence-Toolkit" target="_blank" rel="noopener">INTERPOL Responsible AI Toolkit</a><span>Rights-based framework for AI in law enforcement</span></li>
+        <li><a href="https://huggingface.co/blog/mlabonne/abliteration" target="_blank" rel="noopener">How abliteration works</a><span>Technical explainer on removing refusals from open models</span></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Prepared for an AI technology briefing for law enforcement, November 2026. Cases and figures are drawn from public reporting and vendor research; tool names and prices are seller claims.</p>
+    <p>General reference only. Not legal advice and not a service policy. Follow your service's procedures and consult your legal services or Crown on process.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+
+  // checklist ticks persist per viewer
+  document.querySelectorAll('.check input').forEach(function (box) {
+    if (store.get('aitk-' + box.id) === '1') box.checked = true;
+    box.addEventListener('change', function () {
+      box.checked ? store.set('aitk-' + box.id, '1') : store.del('aitk-' + box.id);
+    });
+  });
+  document.querySelectorAll('[data-reset]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('[data-list="' + btn.dataset.reset + '"] input').forEach(function (box) {
+        box.checked = false; store.del('aitk-' + box.id);
+      });
+    });
+  });
+
+  // glossary filter
+  var q = document.getElementById('q'), none = document.getElementById('none');
+  var items = Array.prototype.slice.call(document.querySelectorAll('#gloss > div'));
+  q.addEventListener('input', function () {
+    var term = q.value.trim().toLowerCase(), shown = 0;
+    items.forEach(function (it) {
+      var hit = !term || it.textContent.toLowerCase().indexOf(term) > -1;
+      it.hidden = !hit; if (hit) shown++;
+    });
+    none.hidden = shown > 0;
+  });
+
+  // copy buttons
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var el = document.getElementById(btn.dataset.copy), txt = el.textContent.trim();
+      var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy number'; }, 1600); };
+      var fallback = function () { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selected, copy it'; };
+      try { navigator.clipboard.writeText(txt).then(done, fallback); } catch (e) { fallback(); }
+    });
+  });
+
+  // highlight current section in the nav
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.bar a'));
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id); });
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    document.querySelectorAll('main section').forEach(function (s) { io.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
