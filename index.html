@@ -116,6 +116,13 @@ td:first-child { font-family: var(--mono); font-weight: 600; white-space: nowrap
 .tool time { font: 600 .72rem/1 var(--mono); color: var(--accent); white-space: nowrap; }
 .tool p { margin: 0; color: var(--muted); font-size: .92rem; }
 
+/* Ontario snapshot */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 12px; }
+.stat { background: var(--panel); border: 1px solid var(--line); padding: 14px; display: grid; gap: 4px; min-width: 0; }
+.stat .num { font: 700 1.7rem/1.1 var(--mono); color: var(--accent); font-variant-numeric: tabular-nums; }
+.stat .lbl { color: var(--muted); font-size: .9rem; }
+.cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+
 /* glossary */
 .search { width: 100%; font: 1rem var(--mono); color: var(--fg); background: var(--panel); border: 1px solid var(--line); padding: 12px 14px; margin-bottom: 12px; }
 .search::placeholder { color: var(--muted); }
@@ -145,19 +152,21 @@ html { scroll-behavior: smooth; }
 
 <header class="top">
   <div class="wrap">
-    <p class="kicker">&gt; Field reference // Updated November 2026</p>
+    <p class="kicker">&gt; Field reference // Ontario, Canada // Updated November 2026</p>
     <h1>AI Toolkit for Investigators</h1>
-    <p class="lede">What to check, where AI evidence lives, how to get it, and who to call. Built to accompany an AI technology briefing for police. Tick boxes are saved on your own phone only.</p>
+    <p class="lede">For police in Ontario: what to check, where AI evidence lives, how to get it under Canadian law, the Ontario rules that apply, and who to call. Tick boxes are saved on your own phone only.</p>
     <ul class="motto" aria-label="Three rules"><li>Slow down</li><li>Verify</li><li>Preserve</li></ul>
   </div>
 </header>
 
 <nav class="bar" aria-label="Sections">
   <div class="wrap">
+    <a href="#ontario">Ontario snapshot</a>
     <a href="#verify">Is it real?</a>
     <a href="#victims">Victim advice</a>
     <a href="#device">On the device</a>
     <a href="#cloud">In the cloud</a>
+    <a href="#law">Ontario law &amp; oversight</a>
     <a href="#watchlist">Dark AI tools</a>
     <a href="#own-use">Using AI at work</a>
     <a href="#glossary">Glossary</a>
@@ -166,6 +175,22 @@ html { scroll-behavior: smooth; }
 </nav>
 
 <main class="wrap">
+
+  <section id="ontario">
+    <h2><span class="tag">00 // Close to home</span>Ontario snapshot</h2>
+    <p class="intro">AI-assisted fraud and deepfakes are already in Ontario case files.</p>
+    <div class="stats">
+      <div class="stat"><span class="num">~17,000</span><span class="lbl">fraud reports to Toronto police in 2026, as of October</span></div>
+      <div class="stat"><span class="num">1 in 6</span><span class="lbl">are impersonation scams: fake banks, telcos and agencies</span></div>
+      <div class="stat"><span class="num">$50M+</span><span class="lbl">reported stolen in Toronto by mid-October 2026</span></div>
+    </div>
+    <div class="cases">
+      <article class="tool"><header><h3>Sault Ste. Marie</h3><time>2025–26</time></header><p>An 86-year-old lost $900,000 after a Facebook deepfake of the Prime Minister pitched a $350 "Bank of Canada backed" investment.</p></article>
+      <article class="tool"><header><h3>Ottawa</h3><time>May 2026</time></header><p>Two men charged over sexual deepfakes of 50+ victims aged 16 to 55. Traced through an Airbnb booking: ordinary records still solve AI crimes.</p></article>
+      <article class="tool"><header><h3>Ontario Court of Justice</h3><time>2025</time></header><p>R. v. Medow, 2025 ONCJ 661: a bare claim that body-cam video was a deepfake was rejected. "It's fake" needs evidence.</p></article>
+    </div>
+    <p class="note">Sources: Toronto Police Service Financial Crimes (Breakfast Television, Oct 28, 2026); CTV News; Ottawa Police; CanLII.</p>
+  </section>
 
   <section id="verify">
     <h2><span class="tag">01 // Verification</span>Is it real?</h2>
@@ -200,12 +225,12 @@ html { scroll-behavior: smooth; }
           <li><label><input type="checkbox" id="do1"><span>Confirm with the issuer directly<small>Bank, employer, government office: use their published contact.</small></span></label></li>
           <li><label><input type="checkbox" id="do2"><span>Check the file properties<small>Creator software, creation and edit dates, fonts.</small></span></label></li>
           <li><label><input type="checkbox" id="do3"><span>Check selfie and ID matches against liveness logs<small>Ask the institution for its verification records, not just the image.</small></span></label></li>
-          <li><label><input type="checkbox" id="do4"><span>Check investment firms are registered<small>aretheyregistered.ca or your provincial securities regulator.</small></span></label></li>
+          <li><label><input type="checkbox" id="do4"><span>Check investment firms are registered<small>aretheyregistered.ca, or the Ontario Securities Commission at 1-877-785-1555.</small></span></label></li>
         </ul>
         <button class="reset" type="button" data-reset="doc">Clear ticks</button>
       </div>
     </div>
-    <p class="callout"><b>In court</b>"It's a deepfake" is a claim that needs evidence, in either direction. In R. v. Medow, 2025 ONCJ 661, a bare allegation that body-cam video was faked was rejected.</p>
+    <p class="callout"><b>In court</b>"It's a deepfake" is a claim that needs evidence, in either direction. In R. v. Medow, 2025 ONCJ 661, the Ontario Court of Justice rejected a bare allegation that body-cam video was faked.</p>
   </section>
 
   <section id="victims">
@@ -216,6 +241,8 @@ html { scroll-behavior: smooth; }
       <div class="panel"><h3>Set a family code word</h3><p class="note" style="margin:0">A short recording is enough to clone a voice. A code word defeats the "grandchild in trouble" call.</p></div>
       <div class="panel"><h3>Never pay in crypto or gift cards</h3><p class="note" style="margin:0">No bank, police service or government agency asks for payment this way.</p></div>
       <div class="panel"><h3>Fake gains are the hook</h3><p class="note" style="margin:0">A dashboard showing your money growing is the scam. Try a small withdrawal before investing more.</p></div>
+      <div class="panel"><h3>Sextortion is now clearly a crime</h3><p class="note" style="margin:0">Threatening to share intimate images, real or AI-generated, is a Criminal Code offence since July 2026. Don't pay. Keep the messages. Report it.</p></div>
+      <div class="panel"><h3>Support for victims</h3><p class="note" style="margin:0">Ontario's Victim Support Line: <span class="mono">1-888-579-2888</span> (GTA <span class="mono">416-314-2447</span>), 24/7, multilingual, free.</p></div>
     </div>
   </section>
 
@@ -245,15 +272,45 @@ html { scroll-behavior: smooth; }
     <p class="intro">If the suspect used ChatGPT, Claude, Gemini or similar, the chats sit on the provider's servers. Most providers are US companies. Move early.</p>
     <ol class="steps">
       <li><div><h3>Preserve first</h3><p>Preservation demand under s. 487.012 Cr.C., and a voluntary preservation request to the provider. OpenAI's published policy preserves data for up to 90 days on request. Deleted chats can be gone from some providers within 30 days.</p></div></li>
-      <li><div><h3>Then compel</h3><p>Production order (s. 487.014) for Canadian-held data. For US-held content, get advice early on the cross-border route (MLAT or provider policy). Check each provider's law-enforcement guidelines.</p></div></li>
+      <li><div><h3>Then compel</h3><p>Production order (s. 487.014) for Canadian-held data. US-held content usually needs a mutual legal assistance request through Justice Canada's International Assistance Group, or the provider's own process. Involve your Crown Attorney's office early, and check each provider's law-enforcement guidelines.</p></div></li>
       <li><div><h3>Ask for the right things</h3><p>Subscriber and payment details, IP and login history, chat content, uploaded files, generated images, and any safety flags or account enforcement.</p></div></li>
       <li><div><h3>Imminent harm</h3><p>Providers run emergency disclosure processes for threats to life. A provider referral is possible but never guaranteed; no Canadian law requires AI companies to report threats.</p></div></li>
     </ol>
-    <p class="note">Reference: <a href="https://cdn.openai.com/pdf/openai-law-enforcement-policy-v.2025-12.pdf" target="_blank" rel="noopener">OpenAI Government User Data Request Policy (PDF)</a>. Not legal advice; confirm with your legal services or Crown.</p>
+    <p class="note">Reference: <a href="https://cdn.openai.com/pdf/openai-law-enforcement-policy-v.2025-12.pdf" target="_blank" rel="noopener">OpenAI Government User Data Request Policy (PDF)</a>. Not legal advice; confirm with your service's legal services or the Crown.</p>
+  </section>
+
+  <section id="law">
+    <h2><span class="tag">05 // Ontario</span>Ontario law &amp; oversight</h2>
+    <p class="intro">Criminal law is federal and applies across Canada. Privacy, human rights and court rules for police in Ontario come from the province.</p>
+    <div class="stack">
+      <div class="panel">
+        <h3>Sexual deepfakes: Criminal Code s. 162.1</h3>
+        <p class="note" style="margin:0">Bill C-16, the Protecting Victims Act, in force July 18, 2026, extends the non-consensual intimate image offence to images made or altered electronically, including by AI. The image must be likely to be mistaken for a real recording of the person. It also creates a new offence of threatening to distribute an intimate image, deepfakes included, with a maximum of 10 years. AI-generated child sexual abuse material was already covered by s. 163.1.</p>
+      </div>
+      <div class="cols">
+        <div class="panel">
+          <h3>Privacy: IPC Ontario</h3>
+          <p class="note" style="margin:0">Municipal police services fall under MFIPPA, and the OPP under FIPPA. Both are overseen by the Information and Privacy Commissioner of Ontario. Read the IPC's <em>Facial Recognition and Mugshot Databases: Guidance for Police in Ontario</em> (2024) before any facial recognition search.</p>
+        </div>
+        <div class="panel">
+          <h3>AI principles: IPC and OHRC</h3>
+          <p class="note" style="margin:0">The IPC and the Ontario Human Rights Commission issued joint Principles for the Responsible Use of AI in January 2026. They are not binding, but both bodies may use them when assessing privacy and human rights compliance. Expect questions about bias, transparency and human oversight.</p>
+        </div>
+        <div class="panel">
+          <h3>Courts: AI practice directions</h3>
+          <p class="note" style="margin:0">The Superior Court of Justice has practice directions on AI use in civil and family matters (late 2025) and criminal proceedings (2026). Anything AI-assisted that reaches court must have verified facts and authorities. Check ontariocourts.ca for the current text.</p>
+        </div>
+        <div class="panel">
+          <h3>Your board's AI policy</h3>
+          <p class="note" style="margin:0">Under the Community Safety and Policing Act, 2019, police service boards set policy. Some, including Toronto's (2022), have AI policies that require a risk assessment before a new AI tool is used. Check yours before trying any new tool on case data.</p>
+        </div>
+      </div>
+    </div>
+    <p class="note">Lesson from Toronto: officers' use of Clearview AI in 2019–20 was found to breach privacy law. A tool has to be lawful, not just effective.</p>
   </section>
 
   <section id="watchlist">
-    <h2><span class="tag">05 // Threat intel</span>Dark AI tool watchlist</h2>
+    <h2><span class="tag">06 // Threat intel</span>Dark AI tool watchlist</h2>
     <p class="intro">Criminal AI brands come and go. Most are an uncensored open model or a jailbroken mainstream AI under a new name. Follow the payments and accounts, not the brand.</p>
     <div class="watch">
       <article class="tool"><header><h3>WormGPT</h3><time>2023–26</time></header><p>The original "ChatGPT without limits". Version 4 sold on Telegram for $50/month or $220 lifetime. New versions keep appearing.</p></article>
@@ -269,14 +326,14 @@ html { scroll-behavior: smooth; }
   </section>
 
   <section id="own-use">
-    <h2><span class="tag">06 // Policy</span>Using AI in your own work</h2>
+    <h2><span class="tag">07 // Policy</span>Using AI in your own work</h2>
     <p class="intro">AI helps with review, transcription, translation and drafting. It also invents facts with total confidence.</p>
     <div class="cols">
       <div class="panel">
         <h3>Do</h3>
         <ul class="check" data-list="do">
-          <li><label><input type="checkbox" id="u1"><span>Use only tools your service has approved</span></label></li>
-          <li><label><input type="checkbox" id="u2"><span>Check every fact, quote and citation against the original</span></label></li>
+          <li><label><input type="checkbox" id="u1"><span>Use only tools your service has approved<small>And follow your police service board's AI policy.</small></span></label></li>
+          <li><label><input type="checkbox" id="u2"><span>Check every fact, quote and citation against the original<small>Ontario courts now have AI practice directions; invented authorities get noticed.</small></span></label></li>
           <li><label><input type="checkbox" id="u3"><span>Keep the prompts and outputs if AI touched evidence or a report</span></label></li>
           <li><label><input type="checkbox" id="u4"><span>Label AI-drafted text, and be ready to say which words are yours</span></label></li>
         </ul>
@@ -286,15 +343,15 @@ html { scroll-behavior: smooth; }
         <ul class="check" data-list="dont">
           <li><label><input type="checkbox" id="n1"><span>Paste case details, victim information or evidence into public chatbots</span></label></li>
           <li><label><input type="checkbox" id="n2"><span>Rely on an AI summary of a statement you haven't read</span></label></li>
-          <li><label><input type="checkbox" id="n3"><span>Use facial recognition or other AI tools without a lawful basis<small>Clearview AI use was ruled a privacy breach.</small></span></label></li>
-          <li><label><input type="checkbox" id="n4"><span>Forget disclosure: AI outputs used in a file may be disclosable</span></label></li>
+          <li><label><input type="checkbox" id="n3"><span>Use facial recognition or other AI tools without a lawful basis<small>Follow IPC Ontario guidance. Clearview AI use was ruled a privacy breach.</small></span></label></li>
+          <li><label><input type="checkbox" id="n4"><span>Forget disclosure: AI outputs used in a file may be disclosable<small>Raise it with the Crown early.</small></span></label></li>
         </ul>
       </div>
     </div>
   </section>
 
   <section id="glossary">
-    <h2><span class="tag">07 // Terms</span>Glossary</h2>
+    <h2><span class="tag">08 // Terms</span>Glossary</h2>
     <label for="q" class="intro" style="display:block">Filter the terms you hear in reports and warrants.</label>
     <input id="q" class="search" type="search" placeholder="Search terms, e.g. abliterated" autocomplete="off">
     <dl class="gloss" id="gloss">
@@ -315,12 +372,15 @@ html { scroll-behavior: smooth; }
       <div><dt>SynthID</dt><dd>Google's invisible watermark in AI images, audio and video from its own tools.</dd></div>
       <div><dt>Prompt injection</dt><dd>Hidden instructions in a web page or document that hijack an AI agent reading it.</dd></div>
       <div><dt>Hugging Face</dt><dd>The largest public library of AI models. Legitimate, and also where most uncensored models are published.</dd></div>
+      <div><dt>Sextortion</dt><dd>Threatening to share intimate images, real or AI-made, to get money or more images. A Criminal Code offence since July 2026 (Bill C-16).</dd></div>
+      <div><dt>MFIPPA / FIPPA</dt><dd>Ontario's municipal and provincial access and privacy laws. MFIPPA covers municipal police services; FIPPA covers the OPP.</dd></div>
+      <div><dt>IPC</dt><dd>Information and Privacy Commissioner of Ontario, the privacy oversight body for Ontario police.</dd></div>
     </dl>
     <p class="empty" id="none" hidden>No terms match. Try a shorter word.</p>
   </section>
 
   <section id="report">
-    <h2><span class="tag">08 // Contacts</span>Report &amp; resources</h2>
+    <h2><span class="tag">09 // Contacts</span>Report &amp; resources</h2>
     <div class="cols">
       <div class="panel contact">
         <h3>Canadian Anti-Fraud Centre</h3>
@@ -329,10 +389,23 @@ html { scroll-behavior: smooth; }
         <button class="copy" type="button" data-copy="cafc-phone">Copy number</button>
       </div>
       <div class="panel contact">
+        <h3>Ontario Victim Support Line</h3>
+        <span class="big" id="vsl-phone">1-888-579-2888</span>
+        <span class="note" style="margin:0">GTA: 416-314-2447 · 24/7 · multilingual · free</span>
+        <button class="copy" type="button" data-copy="vsl-phone">Copy number</button>
+      </div>
+      <div class="panel contact">
+        <h3>Ontario Securities Commission</h3>
+        <span class="big" id="osc-phone">1-877-785-1555</span>
+        <span class="note" style="margin:0">Investment fraud reports and registration checks</span>
+        <button class="copy" type="button" data-copy="osc-phone">Copy number</button>
+      </div>
+      <div class="panel contact">
         <h3>Child sexual exploitation, including AI images</h3>
-        <span class="note" style="margin:0">AI-generated child sexual abuse material is still an offence. Public reports: <a href="https://www.cybertip.ca" target="_blank" rel="noopener">cybertip.ca</a></span>
+        <span class="note" style="margin:0">AI-generated child sexual abuse material is an offence. Public reports: <a href="https://www.cybertip.ca" target="_blank" rel="noopener">cybertip.ca</a>. Officers: refer to your service's child exploitation (ICE) unit, part of Ontario's provincial strategy led by the OPP.</span>
       </div>
     </div>
+    <p class="note">Members of the public report to their local police service. In areas policed by the OPP, call the non-emergency line 1-888-310-1122. In an emergency, call 9-1-1.</p>
     <div class="panel" style="margin-top:14px">
       <ul class="links">
         <li><a href="https://www.antifraudcentre-centreantifraude.ca" target="_blank" rel="noopener">Canadian Anti-Fraud Centre</a><span>Current scams, prevention material for the public</span></li>
@@ -340,7 +413,11 @@ html { scroll-behavior: smooth; }
         <li><a href="https://www.aretheyregistered.ca" target="_blank" rel="noopener">Are they registered?</a><span>Check whether an investment firm or adviser is registered in Canada</span></li>
         <li><a href="https://contentcredentials.org/verify" target="_blank" rel="noopener">Content Credentials Verify</a><span>Upload an image to read its provenance record</span></li>
         <li><a href="https://fintrac-canafe.canada.ca" target="_blank" rel="noopener">FINTRAC</a><span>Financial intelligence and reporting obligations</span></li>
-        <li><a href="https://www.priv.gc.ca" target="_blank" rel="noopener">Office of the Privacy Commissioner</a><span>Guidance on facial recognition and biometrics in policing</span></li>
+        <li><a href="https://www.ipc.on.ca/resource/facial-recognition-and-mugshot-databases-guidance-for-police-in-ontario/" target="_blank" rel="noopener">IPC Ontario: facial recognition guidance for police</a><span>The privacy commissioner's guidance for Ontario police services</span></li>
+        <li><a href="https://www.ohrc.on.ca/en/principles-responsible-use-artificial-intelligence" target="_blank" rel="noopener">IPC and OHRC: Principles for the Responsible Use of AI</a><span>Ontario's privacy and human rights expectations for AI (2026)</span></li>
+        <li><a href="https://www.justice.gc.ca/eng/csj-sjc/pl/c16/" target="_blank" rel="noopener">Bill C-16, Protecting Victims Act</a><span>Justice Canada summary of the sexual deepfake and sextortion offences</span></li>
+        <li><a href="https://www.ontariocourts.ca/scj/areas-of-law/criminal/criminal-pd/" target="_blank" rel="noopener">Superior Court of Justice criminal practice direction</a><span>Includes the section on AI use in court proceedings</span></li>
+        <li><a href="https://www.osc.ca/investors/check-before-you-invest" target="_blank" rel="noopener">OSC: Check before you invest</a><span>Ontario Securities Commission investor tools</span></li>
         <li><a href="https://www.interpol.int/How-we-work/Innovation/Artificial-Intelligence-Toolkit" target="_blank" rel="noopener">INTERPOL Responsible AI Toolkit</a><span>Rights-based framework for AI in law enforcement</span></li>
         <li><a href="https://huggingface.co/blog/mlabonne/abliteration" target="_blank" rel="noopener">How abliteration works</a><span>Technical explainer on removing refusals from open models</span></li>
       </ul>
@@ -350,8 +427,8 @@ html { scroll-behavior: smooth; }
 
 <footer>
   <div class="wrap">
-    <p>Prepared for an AI technology briefing for law enforcement, November 2026. Cases and figures are drawn from public reporting and vendor research; tool names and prices are seller claims.</p>
-    <p>General reference only. Not legal advice and not a service policy. Follow your service's procedures and consult your legal services or Crown on process.</p>
+    <p>Prepared for an AI technology briefing for police in Ontario, November 2026. Cases and figures are drawn from public reporting and vendor research; tool names and prices are seller claims.</p>
+    <p>General reference only. Not legal advice and not a service policy. Follow your service's procedures and your board's policies, and consult your legal services or the Crown Attorney's office on process.</p>
   </div>
 </footer>
 
