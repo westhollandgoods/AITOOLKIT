@@ -116,13 +116,6 @@ td:first-child { font-family: var(--mono); font-weight: 600; white-space: nowrap
 .tool time { font: 600 .72rem/1 var(--mono); color: var(--accent); white-space: nowrap; }
 .tool p { margin: 0; color: var(--muted); font-size: .92rem; }
 
-/* Ontario snapshot */
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 12px; }
-.stat { background: var(--panel); border: 1px solid var(--line); padding: 14px; display: grid; gap: 4px; min-width: 0; }
-.stat .num { font: 700 1.7rem/1.1 var(--mono); color: var(--accent); font-variant-numeric: tabular-nums; }
-.stat .lbl { color: var(--muted); font-size: .9rem; }
-.cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
-
 /* glossary */
 .search { width: 100%; font: 1rem var(--mono); color: var(--fg); background: var(--panel); border: 1px solid var(--line); padding: 12px 14px; margin-bottom: 12px; }
 .search::placeholder { color: var(--muted); }
@@ -154,19 +147,17 @@ html { scroll-behavior: smooth; }
   <div class="wrap">
     <p class="kicker">&gt; Field reference // Ontario, Canada // Updated November 2026</p>
     <h1>AI Toolkit for Investigators</h1>
-    <p class="lede">For police in Ontario: what to check, where AI evidence lives, how to get it under Canadian law, the Ontario rules that apply, and who to call. Tick boxes are saved on your own phone only.</p>
+    <p class="lede">An independent, self-published reference shared to help investigators and the public deal with AI-enabled crime. It is not endorsed by, and does not speak for, any police service.</p>
     <ul class="motto" aria-label="Three rules"><li>Slow down</li><li>Verify</li><li>Preserve</li></ul>
   </div>
 </header>
 
 <nav class="bar" aria-label="Sections">
   <div class="wrap">
-    <a href="#ontario">Ontario snapshot</a>
     <a href="#verify">Is it real?</a>
     <a href="#victims">Victim advice</a>
     <a href="#device">On the device</a>
     <a href="#cloud">In the cloud</a>
-    <a href="#law">Ontario law &amp; oversight</a>
     <a href="#watchlist">Dark AI tools</a>
     <a href="#own-use">Using AI at work</a>
     <a href="#glossary">Glossary</a>
@@ -175,22 +166,6 @@ html { scroll-behavior: smooth; }
 </nav>
 
 <main class="wrap">
-
-  <section id="ontario">
-    <h2><span class="tag">00 // Close to home</span>Ontario snapshot</h2>
-    <p class="intro">AI-assisted fraud and deepfakes are already in Ontario case files.</p>
-    <div class="stats">
-      <div class="stat"><span class="num">~17,000</span><span class="lbl">fraud reports to Toronto police in 2026, as of October</span></div>
-      <div class="stat"><span class="num">1 in 6</span><span class="lbl">are impersonation scams: fake banks, telcos and agencies</span></div>
-      <div class="stat"><span class="num">$50M+</span><span class="lbl">reported stolen in Toronto by mid-October 2026</span></div>
-    </div>
-    <div class="cases">
-      <article class="tool"><header><h3>Sault Ste. Marie</h3><time>2025–26</time></header><p>An 86-year-old lost $900,000 after a Facebook deepfake of the Prime Minister pitched a $350 "Bank of Canada backed" investment.</p></article>
-      <article class="tool"><header><h3>Ottawa</h3><time>May 2026</time></header><p>Two men charged over sexual deepfakes of 50+ victims aged 16 to 55. Traced through an Airbnb booking: ordinary records still solve AI crimes.</p></article>
-      <article class="tool"><header><h3>Ontario Court of Justice</h3><time>2025</time></header><p>R. v. Medow, 2025 ONCJ 661: a bare claim that body-cam video was a deepfake was rejected. "It's fake" needs evidence.</p></article>
-    </div>
-    <p class="note">Sources: Toronto Police Service Financial Crimes (Breakfast Television, Oct 28, 2026); CTV News; Ottawa Police; CanLII.</p>
-  </section>
 
   <section id="verify">
     <h2><span class="tag">01 // Verification</span>Is it real?</h2>
@@ -234,8 +209,7 @@ html { scroll-behavior: smooth; }
   </section>
 
   <section id="victims">
-    <h2><span class="tag">02 // Prevention</span>What to tell the public</h2>
-    <p class="intro">Short lines that work at a counter, on a call or in a media release.</p>
+    <h2><span class="tag">02 // Prevention</span>Helpful hints for the public</h2>
     <div class="cols">
       <div class="panel"><h3>Assume it's fake until verified</h3><p class="note" style="margin:0">If a video shows a public figure promoting an investment, assume it is fake. The Prime Minister does not sell crypto platforms.</p></div>
       <div class="panel"><h3>Set a family code word</h3><p class="note" style="margin:0">A short recording is enough to clone a voice. A code word defeats the "grandchild in trouble" call.</p></div>
@@ -279,38 +253,8 @@ html { scroll-behavior: smooth; }
     <p class="note">Reference: <a href="https://cdn.openai.com/pdf/openai-law-enforcement-policy-v.2025-12.pdf" target="_blank" rel="noopener">OpenAI Government User Data Request Policy (PDF)</a>. Not legal advice; confirm with your service's legal services or the Crown.</p>
   </section>
 
-  <section id="law">
-    <h2><span class="tag">05 // Ontario</span>Ontario law &amp; oversight</h2>
-    <p class="intro">Criminal law is federal and applies across Canada. Privacy, human rights and court rules for police in Ontario come from the province.</p>
-    <div class="stack">
-      <div class="panel">
-        <h3>Sexual deepfakes: Criminal Code s. 162.1</h3>
-        <p class="note" style="margin:0">Bill C-16, the Protecting Victims Act, in force July 18, 2026, extends the non-consensual intimate image offence to images made or altered electronically, including by AI. The image must be likely to be mistaken for a real recording of the person. It also creates a new offence of threatening to distribute an intimate image, deepfakes included, with a maximum of 10 years. AI-generated child sexual abuse material was already covered by s. 163.1.</p>
-      </div>
-      <div class="cols">
-        <div class="panel">
-          <h3>Privacy: IPC Ontario</h3>
-          <p class="note" style="margin:0">Municipal police services fall under MFIPPA, and the OPP under FIPPA. Both are overseen by the Information and Privacy Commissioner of Ontario. Read the IPC's <em>Facial Recognition and Mugshot Databases: Guidance for Police in Ontario</em> (2024) before any facial recognition search.</p>
-        </div>
-        <div class="panel">
-          <h3>AI principles: IPC and OHRC</h3>
-          <p class="note" style="margin:0">The IPC and the Ontario Human Rights Commission issued joint Principles for the Responsible Use of AI in January 2026. They are not binding, but both bodies may use them when assessing privacy and human rights compliance. Expect questions about bias, transparency and human oversight.</p>
-        </div>
-        <div class="panel">
-          <h3>Courts: AI practice directions</h3>
-          <p class="note" style="margin:0">The Superior Court of Justice has practice directions on AI use in civil and family matters (late 2025) and criminal proceedings (2026). Anything AI-assisted that reaches court must have verified facts and authorities. Check ontariocourts.ca for the current text.</p>
-        </div>
-        <div class="panel">
-          <h3>Your board's AI policy</h3>
-          <p class="note" style="margin:0">Under the Community Safety and Policing Act, 2019, police service boards set policy. Some, including Toronto's (2022), have AI policies that require a risk assessment before a new AI tool is used. Check yours before trying any new tool on case data.</p>
-        </div>
-      </div>
-    </div>
-    <p class="note">Lesson from Toronto: officers' use of Clearview AI in 2019–20 was found to breach privacy law. A tool has to be lawful, not just effective.</p>
-  </section>
-
   <section id="watchlist">
-    <h2><span class="tag">06 // Threat intel</span>Dark AI tool watchlist</h2>
+    <h2><span class="tag">05 // Threat intel</span>Dark AI tool watchlist</h2>
     <p class="intro">Criminal AI brands come and go. Most are an uncensored open model or a jailbroken mainstream AI under a new name. Follow the payments and accounts, not the brand.</p>
     <div class="watch">
       <article class="tool"><header><h3>WormGPT</h3><time>2023–26</time></header><p>The original "ChatGPT without limits". Version 4 sold on Telegram for $50/month or $220 lifetime. New versions keep appearing.</p></article>
@@ -326,7 +270,7 @@ html { scroll-behavior: smooth; }
   </section>
 
   <section id="own-use">
-    <h2><span class="tag">07 // Policy</span>Using AI in your own work</h2>
+    <h2><span class="tag">06 // Policy</span>Using AI in your own work</h2>
     <p class="intro">AI helps with review, transcription, translation and drafting. It also invents facts with total confidence.</p>
     <div class="cols">
       <div class="panel">
@@ -351,7 +295,7 @@ html { scroll-behavior: smooth; }
   </section>
 
   <section id="glossary">
-    <h2><span class="tag">08 // Terms</span>Glossary</h2>
+    <h2><span class="tag">07 // Terms</span>Glossary</h2>
     <label for="q" class="intro" style="display:block">Filter the terms you hear in reports and warrants.</label>
     <input id="q" class="search" type="search" placeholder="Search terms, e.g. abliterated" autocomplete="off">
     <dl class="gloss" id="gloss">
@@ -380,7 +324,7 @@ html { scroll-behavior: smooth; }
   </section>
 
   <section id="report">
-    <h2><span class="tag">09 // Contacts</span>Report &amp; resources</h2>
+    <h2><span class="tag">08 // Contacts</span>Report &amp; resources</h2>
     <div class="cols">
       <div class="panel contact">
         <h3>Canadian Anti-Fraud Centre</h3>
@@ -405,7 +349,6 @@ html { scroll-behavior: smooth; }
         <span class="note" style="margin:0">AI-generated child sexual abuse material is an offence. Public reports: <a href="https://www.cybertip.ca" target="_blank" rel="noopener">cybertip.ca</a>. Officers: refer to your service's child exploitation (ICE) unit, part of Ontario's provincial strategy led by the OPP.</span>
       </div>
     </div>
-    <p class="note">Members of the public report to their local police service. In areas policed by the OPP, call the non-emergency line 1-888-310-1122. In an emergency, call 9-1-1.</p>
     <div class="panel" style="margin-top:14px">
       <ul class="links">
         <li><a href="https://www.antifraudcentre-centreantifraude.ca" target="_blank" rel="noopener">Canadian Anti-Fraud Centre</a><span>Current scams, prevention material for the public</span></li>
@@ -427,7 +370,7 @@ html { scroll-behavior: smooth; }
 
 <footer>
   <div class="wrap">
-    <p>Prepared for an AI technology briefing for police in Ontario, November 2026. Cases and figures are drawn from public reporting and vendor research; tool names and prices are seller claims.</p>
+    <p>Independently prepared and self-published to accompany an AI technology briefing in Ontario, November 2026. Not endorsed by any police service. Cases and figures are drawn from public reporting and vendor research; tool names and prices are seller claims.</p>
     <p>General reference only. Not legal advice and not a service policy. Follow your service's procedures and your board's policies, and consult your legal services or the Crown Attorney's office on process.</p>
   </div>
 </footer>

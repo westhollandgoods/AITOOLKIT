@@ -7,9 +7,8 @@ A one-page field reference for police investigators in Ontario, Canada, that acc
 - legal process for AI providers
 - a watchlist of dark AI tools
 - a glossary
-- Ontario law and oversight (Bill C-16, IPC Ontario, court AI practice directions)
 - reporting contacts
 
 Live page: https://westhollandgoods.github.io/AITOOLKIT/
 
-General reference only. Not legal advice and not a service policy.
+Independently prepared and self-published. Not endorsed by any police service. General reference only; not legal advice.
