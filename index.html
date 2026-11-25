@@ -139,6 +139,22 @@ footer p { margin: 0 0 8px; max-width: 70ch; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 html { scroll-behavior: smooth; }
+
+/* collapsible sections (accordion) */
+main section { padding-block: 0; scroll-margin-top: 72px; }
+details.acc { border-top: 1px solid var(--line); }
+main > .wrap section:first-of-type details.acc, main section:first-of-type details.acc { border-top: 0; }
+details.acc > summary { list-style: none; cursor: pointer; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 22px 0; }
+details.acc[open] > summary { padding-bottom: 4px; }
+details.acc > summary::-webkit-details-marker { display: none; }
+details.acc > summary h2 { margin: 0; }
+details.acc > summary::after { content: "+"; font: 700 1.6rem/1 var(--mono); color: var(--accent); flex: none; margin-top: 2px; transition: transform .15s; }
+details.acc[open] > summary::after { content: "2"; }
+details.acc > summary:hover h2, details.acc[open] > summary h2 { color: var(--accent); }
+.acc-body { padding-bottom: 28px; }
+.acc-tools { display: flex; justify-content: flex-end; padding-top: 16px; }
+.acc-tools button { font: 500 .78rem/1 var(--mono); background: none; color: var(--muted); border: 1px solid var(--line); padding: 9px 12px; cursor: pointer; }
+.acc-tools button:hover { color: var(--accent); border-color: var(--accent); }
 </style>
 </head>
 <body>
@@ -167,9 +183,12 @@ html { scroll-behavior: smooth; }
 </nav>
 
 <main class="wrap">
+  <div class="acc-tools"><button type="button" id="acc-all" aria-expanded="false">Expand all</button></div>
 
   <section id="verify">
-    <h2><span class="tag">01 // Verification</span>Is it real?</h2>
+    <details class="acc">
+      <summary><h2><span class="tag">01 // Verification</span>Is it real?</h2></summary>
+      <div class="acc-body">
     <p class="intro">A face, a voice or a document can now be generated cheaply. Treat media as a claim to be tested, not proof. These checks work whether the item turns out to be real or fake.</p>
     <div class="cols">
       <div class="panel">
@@ -207,10 +226,14 @@ html { scroll-behavior: smooth; }
       </div>
     </div>
     <p class="callout"><b>In court</b>"It's a deepfake" is a claim that needs evidence, in either direction. In R. v. Medow, 2025 ONCJ 661, the Ontario Court of Justice rejected a bare allegation that body-cam video was faked.</p>
+  </div>
+    </details>
   </section>
 
   <section id="victims">
-    <h2><span class="tag">02 // Prevention</span>Helpful hints for the public</h2>
+    <details class="acc">
+      <summary><h2><span class="tag">02 // Prevention</span>Helpful hints for the public</h2></summary>
+      <div class="acc-body">
     <div class="cols">
       <div class="panel"><h3>Assume it's fake until verified</h3><p class="note" style="margin:0">If a video shows a public figure promoting an investment, assume it is fake. The Prime Minister does not sell crypto platforms.</p></div>
       <div class="panel"><h3>Set a family code word</h3><p class="note" style="margin:0">A short recording is enough to clone a voice. A code word defeats the "grandchild in trouble" call.</p></div>
@@ -219,10 +242,14 @@ html { scroll-behavior: smooth; }
       <div class="panel"><h3>Sextortion is now clearly a crime</h3><p class="note" style="margin:0">Threatening to share intimate images, real or AI-generated, is a Criminal Code offence since July 2026. Don't pay. Keep the messages. Report it.</p></div>
       <div class="panel"><h3>Support for victims</h3><p class="note" style="margin:0">Ontario's Victim Support Line: <span class="mono">1-888-579-2888</span> (GTA <span class="mono">416-314-2447</span>), 24/7, multilingual, free.</p></div>
     </div>
+  </div>
+    </details>
   </section>
 
   <section id="device">
-    <h2><span class="tag">03 // Digital forensics</span>AI on a seized device</h2>
+    <details class="acc">
+      <summary><h2><span class="tag">03 // Digital forensics</span>AI on a seized device</h2></summary>
+      <div class="acc-body">
     <p class="intro">Local AI leaves files. Image the device first. Default paths below can be moved in each app's settings, so also search the whole drive by file type and name.</p>
     <div class="tbl">
       <table>
@@ -240,10 +267,14 @@ html { scroll-behavior: smooth; }
       </table>
     </div>
     <p class="note">Missing metadata does not mean an image is real; re-saving or uploading strips it. A model file alone does not establish criminal use: tie it to what was asked and what was made.</p>
+  </div>
+    </details>
   </section>
 
   <section id="cloud">
-    <h2><span class="tag">04 // Legal process</span>AI in the cloud</h2>
+    <details class="acc">
+      <summary><h2><span class="tag">04 // Legal process</span>AI in the cloud</h2></summary>
+      <div class="acc-body">
     <p class="intro">If the suspect used ChatGPT, Claude, Gemini or similar, the chats sit on the provider's servers. Most providers are US companies. Move early.</p>
     <ol class="steps">
       <li><div><h3>Preserve first</h3><p>Preservation demand under s. 487.012 Cr.C., and a voluntary preservation request to the provider. OpenAI's published policy preserves data for up to 90 days on request. Deleted chats can be gone from some providers within 30 days.</p></div></li>
@@ -251,11 +282,23 @@ html { scroll-behavior: smooth; }
       <li><div><h3>Ask for the right things</h3><p>Subscriber and payment details, IP and login history, chat content, uploaded files, generated images, and any safety flags or account enforcement.</p></div></li>
       <li><div><h3>Imminent harm</h3><p>Providers run emergency disclosure processes for threats to life. A provider referral is possible but never guaranteed; no Canadian law requires AI companies to report threats.</p></div></li>
     </ol>
+    <h3 style="margin:22px 0 2px">Where to send it: major AI providers</h3>
+    <p class="note" style="margin:0 0 10px">Verified law-enforcement portals and legal-process pages. Each needs a government email and valid process; all run emergency channels for threats to life. Confirm the current address on the provider's own page before serving.</p>
+    <ul class="links">
+      <li><a href="https://cdn.openai.com/pdf/openai-law-enforcement-policy-v.2025-12.pdf" target="_blank" rel="noopener">OpenAI — ChatGPT</a><span>Government Data Request Policy; submissions via the Kodex portal</span></li>
+      <li><a href="https://support.anthropic.com/en/articles/9035075-law-enforcement-requests" target="_blank" rel="noopener">Anthropic — Claude</a><span>Request by email to the law-enforcement address on the support page</span></li>
+      <li><a href="https://support.google.com/transparencyreport/answer/7380434" target="_blank" rel="noopener">Google — Gemini</a><span>Law Enforcement Request System (LERS) portal</span></li>
+      <li><a href="https://www.meta.com/actions/safety/audiences/law/guidelines" target="_blank" rel="noopener">Meta</a><span>Law Enforcement Online Request System</span></li>
+    </ul>
     <p class="note">Reference: <a href="https://cdn.openai.com/pdf/openai-law-enforcement-policy-v.2025-12.pdf" target="_blank" rel="noopener">OpenAI Government User Data Request Policy (PDF)</a>. Not legal advice; confirm with your service's legal services or the Crown.</p>
+  </div>
+    </details>
   </section>
 
   <section id="watchlist">
-    <h2><span class="tag">05 // Threat intel</span>Dark AI tool watchlist</h2>
+    <details class="acc">
+      <summary><h2><span class="tag">05 // Threat intel</span>Dark AI tool watchlist</h2></summary>
+      <div class="acc-body">
     <p class="intro">Criminal AI brands come and go. Most are an uncensored open model or a jailbroken mainstream AI under a new name. Follow the payments and accounts, not the brand.</p>
     <div class="watch">
       <article class="tool"><header><h3>WormGPT</h3><time>2023–26</time></header><p>The original "ChatGPT without limits". Version 4 sold on Telegram for $50/month or $220 lifetime. New versions keep appearing.</p></article>
@@ -266,12 +309,17 @@ html { scroll-behavior: smooth; }
       <article class="tool"><header><h3>APEX AI</h3><time>2026</time></header><p>Sold as self-hosted software, so every buyer runs a private copy. No central server to seize.</p></article>
       <article class="tool"><header><h3>Nytheon AI</h3><time>2025</time></header><p>Tor-only platform bundling several uncensored Llama-based models. Promoted on Telegram and Russian-language forums.</p></article>
       <article class="tool"><header><h3>DIG AI</h3><time>2025–26</time></header><p>Tor, no account needed. Promoted on underground markets alongside drugs and stolen financial data.</p></article>
+      <article class="tool"><header><h3>Autonomous attack agents</h3><time>2026–</time></header><p>The shift from text to action: AI agents that run the whole attack, not just draft it. <b>Artex</b>, an open-source AI pen-test framework, was pulled by its author but survives in 12,000+ forks, reportedly used against 200+ organizations. Lowers the skill needed to launch a serious attack. Some forks are booby-trapped — do not download and run.</p></article>
     </div>
     <p class="note">Sources: Palo Alto Unit 42, Sophos CTU, Trellix, Cato CTRL, Resecurity. Prices and capabilities are seller claims.</p>
+  </div>
+    </details>
   </section>
 
   <section id="own-use">
-    <h2><span class="tag">06 // Policy</span>Using AI in your own work</h2>
+    <details class="acc">
+      <summary><h2><span class="tag">06 // Policy</span>Using AI in your own work</h2></summary>
+      <div class="acc-body">
     <p class="intro">AI helps with review, transcription, translation and drafting. It also invents facts with total confidence.</p>
     <div class="cols">
       <div class="panel">
@@ -293,10 +341,14 @@ html { scroll-behavior: smooth; }
         </ul>
       </div>
     </div>
+  </div>
+    </details>
   </section>
 
   <section id="glossary">
-    <h2><span class="tag">07 // Terms</span>Glossary</h2>
+    <details class="acc">
+      <summary><h2><span class="tag">07 // Terms</span>Glossary</h2></summary>
+      <div class="acc-body">
     <label for="q" class="intro" style="display:block">Filter the terms you hear in reports and warrants.</label>
     <input id="q" class="search" type="search" placeholder="Search terms, e.g. abliterated" autocomplete="off">
     <dl class="gloss" id="gloss">
@@ -322,10 +374,14 @@ html { scroll-behavior: smooth; }
       <div><dt>IPC</dt><dd>Information and Privacy Commissioner of Ontario, the privacy oversight body for Ontario police.</dd></div>
     </dl>
     <p class="empty" id="none" hidden>No terms match. Try a shorter word.</p>
+  </div>
+    </details>
   </section>
 
   <section id="report">
-    <h2><span class="tag">08 // Contacts</span>Report &amp; resources</h2>
+    <details class="acc">
+      <summary><h2><span class="tag">08 // Contacts</span>Report &amp; resources</h2></summary>
+      <div class="acc-body">
     <div class="cols">
       <div class="panel contact">
         <h3>Canadian Anti-Fraud Centre</h3>
@@ -366,10 +422,14 @@ html { scroll-behavior: smooth; }
         <li><a href="https://huggingface.co/blog/mlabonne/abliteration" target="_blank" rel="noopener">How abliteration works</a><span>Technical explainer on removing refusals from open models</span></li>
       </ul>
     </div>
+  </div>
+    </details>
   </section>
 
   <section id="explore">
-    <h2><span class="tag">09 // Try it</span>Explore AI yourself</h2>
+    <details class="acc">
+      <summary><h2><span class="tag">09 // Try it</span>Explore AI yourself</h2></summary>
+      <div class="acc-body">
     <p class="intro">The best defence is knowing what these tools can do. Spend ten minutes with them.</p>
     <p class="callout" style="margin:0 0 14px"><b>Before you start</b>Use a personal device. Never enter case information, victim details or anything from work. Follow your service’s policy.</p>
     <div class="cols">
@@ -379,6 +439,8 @@ html { scroll-behavior: smooth; }
       <div class="panel"><h3>Test your eye for fakes</h3><p class="note" style="margin:0 0 12px">Harder than it looks.</p><ul class="links"><li><a href="https://www.whichfaceisreal.com" target="_blank" rel="noopener">Which Face Is Real?</a><span>Pick the real photo from an AI-generated one</span></li><li><a href="https://contentcredentials.org/verify" target="_blank" rel="noopener">Content Credentials Verify</a><span>Read an image’s origin record</span></li></ul></div>
       <div class="panel"><h3>Learn the basics</h3><p class="note" style="margin:0 0 12px">Free, self-paced, no maths required to start.</p><ul class="links"><li><a href="https://www.elementsofai.com" target="_blank" rel="noopener">Elements of AI</a><span>Free plain-language introduction to AI</span></li><li><a href="https://huggingface.co/learn" target="_blank" rel="noopener">Hugging Face Learn</a><span>Free courses for those who want to go deeper</span></li></ul></div>
     </div>
+  </div>
+    </details>
   </section>
 </main>
 
@@ -444,6 +506,28 @@ html { scroll-behavior: smooth; }
     }, { rootMargin: '-40% 0px -55% 0px' });
     document.querySelectorAll('main section').forEach(function (s) { io.observe(s); });
   }
+})();
+</script>
+<script>
+(function () {
+  function sections(){ return Array.prototype.slice.call(document.querySelectorAll('main section > details.acc')); }
+  // open a section when its nav link / anchor is used
+  function openForHash(){
+    var id = location.hash.slice(1); if (!id) return;
+    var sec = document.getElementById(id); if (!sec) return;
+    var d = sec.querySelector('details.acc'); if (d) d.open = true;
+    sec.scrollIntoView({ block: 'start' });
+  }
+  window.addEventListener('hashchange', openForHash);
+  openForHash();
+  // expand all / collapse all
+  var btn = document.getElementById('acc-all');
+  if (btn) btn.addEventListener('click', function () {
+    var ds = sections(), anyClosed = ds.some(function (d) { return !d.open; });
+    ds.forEach(function (d) { d.open = anyClosed; });
+    btn.textContent = anyClosed ? 'Collapse all' : 'Expand all';
+    btn.setAttribute('aria-expanded', anyClosed ? 'true' : 'false');
+  });
 })();
 </script>
 </body>
