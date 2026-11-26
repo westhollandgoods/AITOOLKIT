@@ -1,6 +1,6 @@
 // Offline support: keep the toolkit, its images and the handout on the device.
 // Bump VERSION whenever any of these files change so phones pick up the update.
-const VERSION = 'aitk-v1';
+const VERSION = 'aitk-v2';
 const CORE = [
   './', './index.html', './manifest.webmanifest', './handout.pdf',
   './icon-192.png', './icon-512.png', './apple-touch-icon.png',
