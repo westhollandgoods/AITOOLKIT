@@ -1,10 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- AI Toolkit for Investigators: independent, self-published field reference. -->
+
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AI Toolkit for Investigators</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0a0806">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AI Toolkit">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
@@ -241,6 +250,41 @@ section.inview details.acc > summary h2 .tag { animation: flick .9s steps(2) 1; 
 .share { margin-top: 18px; font: 600 .82rem/1 var(--mono); background: none; color: var(--fg); border: 1px dashed var(--accent); padding: 12px 14px; cursor: pointer; }
 .share:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
 
+
+/* test yourself */
+.hbtns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.hbtns .share { margin-top: 0; text-decoration: none; display: inline-block; }
+.faces { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+.face { position: relative; padding: 0; border: 2px solid transparent; background: none; cursor: pointer; aspect-ratio: 1; overflow: hidden; }
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s, filter .3s; }
+.face[aria-pressed="true"] { border-color: var(--accent); }
+.face[aria-pressed="true"] img { filter: brightness(.7); }
+.face .badge { position: absolute; left: 6px; top: 6px; font: 700 .72rem/1 var(--mono); background: var(--warn); color: #fff; padding: 5px 6px; transform: scale(0); transition: transform .3s cubic-bezier(.3, 1.5, .5, 1); transition-delay: calc(var(--k, 0) * 90ms); }
+.faces.revealed .badge { transform: scale(1); }
+.faces.revealed .face img { transform: scale(1.04); }
+.scenario { font-size: 1.02rem; margin: 6px 0 12px; min-height: 3.2em; }
+.sol-btns { display: flex; gap: 8px; }
+.sol-btns .chip { flex: 1; padding: 14px; font-size: .9rem; }
+.sol-btns .chip.right { background: var(--ok); color: #0a0806; border-color: var(--ok); }
+.sol-btns .chip.wrong { border-color: var(--warn); color: var(--warn); }
+.sol-why { margin: 12px 0 0; font-size: .95rem; min-height: 1.2em; }
+.sol-why b { font-family: var(--mono); }
+.meter-line { margin: 0; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 640px) { .faces { grid-template-columns: repeat(2, 1fr); } }
+
+/* print: a clean black-on-white copy of the whole page */
+@media print {
+  @page { margin: 14mm; }
+  :root, :root[data-theme] { --bg: #fff; --panel: #fff; --line: #999; --fg: #000; --muted: #333; --accent: #000; --accent-ink: #fff; --warn: #000; --ok: #000; --grid: transparent; }
+  body { background: #fff !important; animation: none !important; font-size: 11pt; }
+  #net, .ticker, nav.bar, .progress, .totop, .acc-tools, .hbtns, .reset, .copy, .chips, #test, #explore, .gauge, .gauge-labels, h1.scan::after, .kicker .caret { display: none !important; }
+  details.acc > summary::after { display: none; }
+  .panel, .tool, .tcard, .steps li, .scam, .tbl { break-inside: avoid; border-color: #999 !important; }
+  .tcard[hidden] { display: flex !important; }
+  .fx { animation: none !important; opacity: 1 !important; transform: none !important; }
+  a { color: #000; }
+}
+
 /* phones: bigger touch targets and legible small labels */
 @media (max-width: 640px) {
   nav.bar a { padding: 12px 12px; font-size: .82rem; }
@@ -269,7 +313,7 @@ section.inview details.acc > summary h2 .tag { animation: flick .9s steps(2) 1; 
     <h1 class="scan">AI Toolkit for Investigators</h1>
     <p class="lede">An independent, self-published reference shared to help investigators and the public deal with AI-enabled crime. It is not endorsed by, and does not speak for, any police service.</p>
     <ul class="motto" aria-label="Three rules"><li>Slow down</li><li>Verify</li><li>Preserve</li></ul>
-    <button type="button" class="share" id="share">Share this toolkit</button>
+    <div class="hbtns"><button type="button" class="share" id="share">Share this toolkit</button><a class="share" href="handout.pdf" target="_blank" rel="noopener">Printable handout (PDF)</a><button type="button" class="share" id="install" hidden>Save to home screen</button></div>
   </div>
 </header>
 
@@ -303,6 +347,7 @@ section.inview details.acc > summary h2 .tag { animation: flick .9s steps(2) 1; 
     <a href="#glossary">Glossary</a>
     <a href="#report">Report &amp; resources</a>
     <a href="#tools">Tools</a>
+    <a href="#test">Test yourself</a>
     <a href="#explore">Explore AI</a>
   </div>
 </nav>
@@ -359,6 +404,7 @@ section.inview details.acc > summary h2 .tag { animation: flick .9s steps(2) 1; 
     <details class="acc">
       <summary><h2><span class="tag">02 // Prevention</span>Helpful hints for the public</h2></summary>
       <div class="acc-body">
+    <p class="note" style="margin:0 0 12px"><a href="handout.pdf" target="_blank" rel="noopener">Download the black-and-white handout (PDF)</a>: one page for the public, one for investigators. Print it for victims and family.</p>
     <div class="scam" id="scam">
       <h3>Is this a scam? Quick red-flag check</h3>
       <p class="note" style="margin:0">Tick everything that happened. Nothing is sent anywhere; it all stays on this page.</p>
@@ -617,9 +663,32 @@ section.inview details.acc > summary h2 .tag { animation: flick .9s steps(2) 1; 
     </details>
   </section>
 
+  <section id="test">
+    <details class="acc">
+      <summary><h2><span class="tag">10 // Test yourself</span>Spot the fake, spot the scam</h2></summary>
+      <div class="acc-body">
+    <div class="panel quiz" id="faces">
+      <h3>Which of these people are real?</h3>
+      <p class="note" style="margin:0 0 12px">Tap every photo you think is AI-generated, then reveal.</p>
+      <div class="faces"><button type="button" class="face" aria-pressed="false"><img src="img/f1.jpg" alt="Photo 1" loading="lazy" width="420" height="420"><span class="badge">AI</span></button><button type="button" class="face" aria-pressed="false"><img src="img/f2.jpg" alt="Photo 2" loading="lazy" width="420" height="420"><span class="badge">AI</span></button><button type="button" class="face" aria-pressed="false"><img src="img/f3.jpg" alt="Photo 3" loading="lazy" width="420" height="420"><span class="badge">AI</span></button><button type="button" class="face" aria-pressed="false"><img src="img/f4.jpg" alt="Photo 4" loading="lazy" width="420" height="420"><span class="badge">AI</span></button><button type="button" class="face" aria-pressed="false"><img src="img/f5.jpg" alt="Photo 5" loading="lazy" width="420" height="420"><span class="badge">AI</span></button><button type="button" class="face" aria-pressed="false"><img src="img/f6.jpg" alt="Photo 6" loading="lazy" width="420" height="420"><span class="badge">AI</span></button><button type="button" class="face" aria-pressed="false"><img src="img/f7.jpg" alt="Photo 7" loading="lazy" width="420" height="420"><span class="badge">AI</span></button><button type="button" class="face" aria-pressed="false"><img src="img/f8.jpg" alt="Photo 8" loading="lazy" width="420" height="420"><span class="badge">AI</span></button></div>
+      <button type="button" class="copy" id="reveal">Reveal</button>
+      <p class="verdict v0" id="faces-result" aria-live="polite" hidden></p>
+    </div>
+    <div class="panel quiz" id="sol" style="margin-top:14px">
+      <h3>Scam or legit?</h3>
+      <p class="meter-line mono" id="sol-count"></p>
+      <p class="scenario" id="sol-q"></p>
+      <div class="sol-btns"><button type="button" class="chip" data-a="scam">Scam</button><button type="button" class="chip" data-a="legit">Legit</button></div>
+      <p class="sol-why" id="sol-why" aria-live="polite"></p>
+      <button type="button" class="copy" id="sol-next" hidden>Next</button>
+    </div>
+  </div>
+    </details>
+  </section>
+
   <section id="explore">
     <details class="acc">
-      <summary><h2><span class="tag">10 // Try it</span>Explore AI yourself</h2></summary>
+      <summary><h2><span class="tag">11 // Try it</span>Explore AI yourself</h2></summary>
       <div class="acc-body">
     <p class="intro">The best defence is knowing what these tools can do. Spend ten minutes with them.</p>
     <p class="callout" style="margin:0 0 14px"><b>Before you start</b>Use a personal device. Never enter case information, victim details or anything from work. Follow your service’s policy.</p>
@@ -911,6 +980,71 @@ section.inview details.acc > summary h2 .tag { animation: flick .9s steps(2) 1; 
     var ok = function () { sh.textContent = 'Link copied'; setTimeout(function () { sh.textContent = 'Share this toolkit'; }, 1800); };
     try { navigator.clipboard.writeText(url).then(ok, function () { prompt('Copy this link:', url); }); } catch (e) { prompt('Copy this link:', url); }
   });
+
+  // spot the fake
+  var fwrap = document.querySelector('.faces');
+  if (fwrap) {
+    var fs = fwrap.querySelectorAll('.face'), res = document.getElementById('faces-result'), rv = document.getElementById('reveal');
+    fs.forEach(function (f, k) {
+      f.style.setProperty('--k', k);
+      f.addEventListener('click', function () { if (!fwrap.classList.contains('revealed')) f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); });
+    });
+    rv.addEventListener('click', function () {
+      if (fwrap.classList.contains('revealed')) {   // play again
+        fwrap.classList.remove('revealed'); fs.forEach(function (f) { f.setAttribute('aria-pressed', 'false'); });
+        res.hidden = true; rv.textContent = 'Reveal'; return;
+      }
+      var n = 0; fs.forEach(function (f) { if (f.getAttribute('aria-pressed') === 'true') n++; });
+      fwrap.classList.add('revealed'); res.hidden = false; rv.textContent = 'Try again';
+      res.className = 'verdict ' + (n === fs.length ? 'v0' : 'v2');
+      res.textContent = (n === fs.length ? 'You caught all 8. ' : 'You flagged ' + n + ' of 8. ') + 'Every one is AI-generated. None of these people exist.';
+    });
+  }
+
+  // scam or legit
+  var Q = [
+    ['A text from "Canada Post": your parcel is on hold. Pay a $2.99 redelivery fee at this link.', 'scam', 'Delivery-fee texts with a payment link are a classic phishing lure. Go to the courier\u2019s site yourself.'],
+    ['Your bank calls about fraud on your account and asks you to read back the code they just texted you.', 'scam', 'No bank will ask for a one-time code. That code is the key to your account.'],
+    ['A Facebook video of the Prime Minister promotes a "government-backed" crypto platform.', 'scam', 'A deepfake ad. An Ontario woman lost $900,000 after one of these started with $350.'],
+    ['Your grandson calls crying from jail. He needs bail in gift cards and begs you not to tell his parents.', 'scam', 'Voice clone plus urgency, secrecy and gift cards. Hang up and call him or his parents on a number you know.'],
+    ['You phone your bank on the number on the back of your card, and they confirm a hold on a strange charge.', 'legit', 'You started the call, on a number you looked up yourself. That is how to verify.'],
+    ['Your CFO joins a video call and asks you to urgently and confidentially wire funds to a new supplier.', 'scam', 'A familiar face on a call is not proof. A firm lost US$25M to a deepfake video call like this.'],
+    ['An investment site shows your money growing fast, but you must pay a "tax" before you can withdraw.', 'scam', 'Fake gains are the hook, and withdrawal fees are the second sting. Stop paying and report it.'],
+    ['A notice from the CRA arrives, and you confirm it by logging in to CRA My Account yourself.', 'legit', 'You checked through the official account, not a link or number in a message.']
+  ];
+  var qi = 0, solScore = 0, qEl = document.getElementById('sol-q');
+  if (qEl) {
+    var cnt = document.getElementById('sol-count'), why = document.getElementById('sol-why'), nxt = document.getElementById('sol-next');
+    var abtn = document.querySelectorAll('#sol .sol-btns .chip');
+    function show() {
+      if (qi >= Q.length) {
+        cnt.textContent = 'Done'; qEl.textContent = 'You got ' + solScore + ' of ' + Q.length + '. The habit that beats all of them: hang up and check through a number or site you find yourself.';
+        why.textContent = ''; abtn.forEach(function (b) { b.hidden = true; }); nxt.hidden = false; nxt.textContent = 'Play again'; return;
+      }
+      cnt.textContent = 'Question ' + (qi + 1) + ' of ' + Q.length + '  //  score ' + solScore;
+      qEl.textContent = Q[qi][0]; why.textContent = ''; nxt.hidden = true;
+      abtn.forEach(function (b) { b.hidden = false; b.disabled = false; b.classList.remove('right', 'wrong'); });
+    }
+    abtn.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var ok = b.dataset.a === Q[qi][1]; if (ok) solScore++;
+        abtn.forEach(function (x) { x.disabled = true; if (x.dataset.a === Q[qi][1]) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+        why.innerHTML = '<b>' + (ok ? 'Correct.' : 'Not quite.') + '</b> ' + Q[qi][2];
+        nxt.hidden = false; nxt.textContent = qi === Q.length - 1 ? 'See solScore' : 'Next';
+      });
+    });
+    nxt.addEventListener('click', function () { if (qi >= Q.length) { qi = 0; solScore = 0; } else qi++; show(); });
+    show();
+  }
+
+  // print: open every section first so nothing is left out
+  addEventListener('beforeprint', function () { document.querySelectorAll('details.acc').forEach(function (d) { d.open = true; }); });
+
+  // offline + install
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(function () {});
+  var ib = document.getElementById('install'), deferred = null;
+  addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; if (ib) ib.hidden = false; });
+  if (ib) ib.addEventListener('click', function () { if (deferred) { deferred.prompt(); deferred = null; ib.hidden = true; } });
 
   // scam red-flag check
   var scam = document.getElementById('scam');
